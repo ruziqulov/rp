@@ -1,0 +1,37 @@
+# ---- Python umumiy fayllar ----
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ---- Virtual muhit ----
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# ---- OS fayllar ----
+.DS_Store
+Thumbs.db
+
+# ---- Loglar ----
+*.log
+
+# ---- Maxfiy fayllar ----
+.env
+database/*.json
+config.json
+
+# ---- IDE / editor fayllar ----
+.vscode/
+.idea/
+
+# ---- Render yoki boshqa hosting vaqtinchalik fayllari ----
+*.sqlite3
+*.db
+*.bak
+
+# ---- Kompilyatsiya / build ----
+build/
+dist/
+*.egg-info/

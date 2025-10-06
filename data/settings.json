@@ -1,0 +1,10 @@
+{
+    "current_week": "pastgi",
+    "auto_switch_on_monday": true,
+    "reminder_minutes_before": 15,
+    "admins": [
+        7062038221
+    ],
+    "send_6am": true,
+    "send_18pm": true
+}
