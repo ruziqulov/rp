@@ -1,11 +1,11 @@
 {
     "tepa": {
-        "Monday": "08:00 - Matematika\n09:00 - Fizika\n10:30 - Ingliz tili",
-        "Tuesday": "08:00 - Kimyo\n09:00 - Biologiya\n10:30 - Tarix",
-        "Wednesday": "08:00 - Tarix\n09:00 - Adabiyot\n10:30 - Informatika",
-        "Thursday": "08:00 - Fizika\n09:00 - Matematika\n10:30 - Ingliz tili",
-        "Friday": "08:00 - Algebra\n09:00 - Geometriya\n10:30 - Musiqa",
-        "Saturday": "09:00 - Jismoniy tarbiya\n10:00 - Sinf soati"
+        "Monday": "⏰ 13:00 — Matematika\n⏰ 14:30 — O‘zbekiston tarixi\n⏰ 16:10 — Ingliz tili\n\n\nDarslarga tayorlanib keling!!!",
+        "Tuesday": "⏰ 13:00 — Biznes asoslari\n⏰ 14:30 — Biznes asoslari\n⏰ 16:10 — Biznes asoslari\n\n\nDarslarga tayorlanib keling!!!",
+        "Wednesday": "⏰ 13:00 — Yol harakati qoidalari va harakat havfsizligi\n⏰ 14:30 — Ona tili va adabiyot\n⏰ 16:10 — CHQBT\n\n\nDarslarga tayorlanib keling!!!",
+        "Thursday": "⏰ 13:00 — Mehnat muhofazasi va teknika havfsizligi\n⏰ 14:30 — Informatika\n⏰ 16:10 — Yol harakati qoidalari va harakat havfsizligi\n\n\nDarslarga tayorlanib keling!!!",
+        "Friday": "⏰ 13:00 — Rus tili\n⏰ 14:30 — Davlat va huquq asoslari\n⏰ 16:10 — Yol harakati qoidalari va harakat havfsizligi\n\n\nDarslarga tayorlanib keling!!!",
+        "Saturday": "⏰ 13:00 — Ona tili\n⏰ 14:30 — Yol harakati qoidalari va harakat havfsizligi\n⏰ 16:10 — Fizika va astronomiya\n\n\nDarslarga tayorlanib keling!!!"
     },
     "pastgi": {
         "Monday": "08:00 - Kimyo\n09:00 - Ingliz tili\n10:30 - Matematika",
