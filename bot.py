@@ -1,13 +1,27 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 import os
 import re
 import json
 import time
-import datetime
 import threading
 from pathlib import Path
 from telebot import TeleBot, types
 from dotenv import load_dotenv
+import datetime
+import pytz   # 🟢 mana shu joyda qo‘sh
+
+# Timezone: always use Tashkent time
+TASHKENT_TZ = pytz.timezone("Asia/Tashkent")
+
+def now_tashkent():
+    """Return timezone-aware current datetime in Tashkent."""
+    return datetime.datetime.now(TASHKENT_TZ)
+
+def today_tashkent_date():
+    """Return current date in Tashkent (datetime.date)."""
+    return now_tashkent().date()
 
 # ========================
 # .env -> TOKEN, ADMIN_ID
@@ -174,9 +188,9 @@ def send_message_safe(chat_id, text, parse_mode="Markdown", reply_markup=None):
         print(f"Send error to {chat_id}: {e}")
 
 def send_daily_morning():
-    """Send today's schedule to all users and groups at 06:00"""
+    """Send today's schedule to all users and groups at 06:00 Tashkent time"""
     week = settings.get("current_week", "tepa")
-    today_en = datetime.date.today().strftime("%A")
+    today_en = today_tashkent_date().strftime("%A")
     if today_en == "Sunday":
         text = "🌞 *Yakshanba* — Bugun dars yo'q! 😎\nDam oling!"
     else:
@@ -209,12 +223,13 @@ def send_daily_morning():
         pass
 
 def send_daily_evening():
-    """Send tomorrow's schedule at 18:00 to users and groups"""
+    """Send tomorrow's schedule at 18:00 Tashkent time to users and groups"""
     week = settings.get("current_week", "tepa")
-    tomorrow = (datetime.date.today() + datetime.timedelta(days=1))
-    tomorrow_en = tomorrow.strftime("%A")
+    today_date = today_tashkent_date()
+    tomorrow_date = today_date + datetime.timedelta(days=1)
+    tomorrow_en = tomorrow_date.strftime("%A")
     week_type = settings.get("current_week", "tepa")
-    if settings.get("auto_switch_on_monday", True) and tomorrow.weekday() == 0:
+    if settings.get("auto_switch_on_monday", True) and tomorrow_date.weekday() == 0:
         week_type = "pastgi" if week_type == "tepa" else "tepa"
     if tomorrow_en == "Sunday":
         text = "🌞 *Yakshanba* — Ertaga dars yo'q! 😎\nDam oling!"
@@ -245,14 +260,15 @@ def send_daily_evening():
         pass
 
 def seconds_until_target(hour, minute=0):
-    now = datetime.datetime.now()
+    """Return seconds until next target time at Tashkent timezone."""
+    now = now_tashkent()
     target = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
     if now >= target:
-        target += datetime.timedelta(days=1)
+        target = target + datetime.timedelta(days=1)
     return (target - now).total_seconds()
 
 def daily_scheduler_loop():
-    """Thread: waits until next 06:00 and 18:00 and sends"""
+    """Thread: waits until next 06:00 and 18:00 (Tashkent) and sends messages"""
     while True:
         sec6 = seconds_until_target(6, 0)
         sec18 = seconds_until_target(18, 0)
@@ -261,7 +277,7 @@ def daily_scheduler_loop():
             time.sleep(sec6)
             if settings.get("send_6am", True):
                 # If it's Monday morning and auto switch enabled: switch week before sending
-                today = datetime.date.today()
+                today = today_tashkent_date()
                 if settings.get("auto_switch_on_monday", True) and today.weekday() == 0:
                     settings["current_week"] = "pastgi" if settings.get("current_week","tepa") == "tepa" else "tepa"
                     save_json(SETTINGS_FILE, settings)
@@ -274,19 +290,21 @@ def daily_scheduler_loop():
 
 # Reminder scheduling for individual users
 def schedule_reminders_for_today():
-    """Schedule reminders (threading.Timer) for times in today's schedule for individuals only."""
-    today_en = datetime.date.today().strftime("%A")
+    """Schedule reminders (threading.Timer) for times in today's schedule for individuals only (Tashkent time)."""
+    today_en = today_tashkent_date().strftime("%A")
     if today_en == "Sunday":
         return
     week = settings.get("current_week", "tepa")
     jadval_text = schedules.get(week, {}).get(today_en, "")
     times = parse_times_from_text(jadval_text)
     minutes_before = int(settings.get("reminder_minutes_before", 15))
-    now = datetime.datetime.now()
+    now = now_tashkent()
     for t in times:
         try:
             hh, mm = map(int, t.split(":"))
-            lesson_dt = datetime.datetime.combine(now.date(), datetime.time(hh, mm))
+            # Build a timezone-aware lesson datetime in Tashkent
+            lesson_naive = datetime.datetime(now.year, now.month, now.day, hh, mm)
+            lesson_dt = TASHKENT_TZ.localize(lesson_naive)
             remind_dt = lesson_dt - datetime.timedelta(minutes=minutes_before)
             delay = (remind_dt - now).total_seconds()
             if delay <= 0:
@@ -296,9 +314,9 @@ def schedule_reminders_for_today():
             print("Reminder schedule error:", e)
 
 def reminder_send_for_time(time_str):
-    """Send reminder to all individual users (not groups)."""
+    """Send reminder to all individual users (not groups) at the scheduled Tashkent time."""
     week = settings.get("current_week", "tepa")
-    today_en = datetime.date.today().strftime("%A")
+    today_en = today_tashkent_date().strftime("%A")
     jadval_text = schedules.get(week, {}).get(today_en, "")
     subject = None
     for line in jadval_text.splitlines():
@@ -371,7 +389,7 @@ def handle_start(m):
             users.append(chat_id)
             save_json(USERS_FILE, users)
         # send today's schedule automatically on /start
-        today_en = datetime.date.today().strftime("%A")
+        today_en = today_tashkent_date().strftime("%A")
         week = settings.get("current_week", "tepa")
         text = pretty_schedule_text(today_en, week)
         send_message_safe(chat_id, "👋 *Assalomu alaykum!* Men — Raspisanie boti 🤖\nQuyidagi tugmalardan foydalaning:", reply_markup=main_reply_keyboard(uid, chat_id))
@@ -384,7 +402,7 @@ def handle_start(m):
             save_json(GROUPS_FILE, groups)
         bot.send_message(chat_id, "👋 Men guruhda ishlashga tayyorman! Adminlar /start orqali admin panelini ochishlari mumkin.")
         # send today's schedule to group automatically
-        today_en = datetime.date.today().strftime("%A")
+        today_en = today_tashkent_date().strftime("%A")
         week = settings.get("current_week", "tepa")
         text = pretty_schedule_text(today_en, week)
         inline = types.InlineKeyboardMarkup()
@@ -399,12 +417,15 @@ def handle_start(m):
 def on_new_members(m):
     # if bot added to group, store group id
     for u in m.new_chat_members:
-        if u.id == bot.get_me().id:
-            gid = m.chat.id
-            if gid not in groups:
-                groups.append(gid)
-                save_json(GROUPS_FILE, groups)
-            bot.send_message(gid, "👋 Men guruhga qo‘shildim — Raspisanie funktsiyalari hozir faqat adminlar tomonidan boshqarilishi mumkin.")
+        try:
+            if u.id == bot.get_me().id:
+                gid = m.chat.id
+                if gid not in groups:
+                    groups.append(gid)
+                    save_json(GROUPS_FILE, groups)
+                bot.send_message(gid, "👋 Men guruhga qo‘shildim — Raspisanie funktsiyalari hozir faqat adminlar tomonidan boshqarilishi mumkin.")
+        except Exception:
+            pass
 
 @bot.message_handler(commands=["help"])
 def cmd_help(m):
@@ -433,7 +454,7 @@ def cmd_ertaga(m):
 def handle_bugun(m):
     chat_id = m.chat.id
     uid = m.from_user.id
-    today_en = datetime.date.today().strftime("%A")
+    today_en = today_tashkent_date().strftime("%A")
     week = settings.get("current_week", "tepa")
     text = pretty_schedule_text(today_en, week)
     # if in group, show inline nav
@@ -447,7 +468,8 @@ def handle_bugun(m):
 def handle_ertaga(m):
     chat_id = m.chat.id
     uid = m.from_user.id
-    tomorrow_date = (datetime.date.today() + datetime.timedelta(days=1))
+    today_date = today_tashkent_date()
+    tomorrow_date = (today_date + datetime.timedelta(days=1))
     tomorrow = tomorrow_date.strftime("%A")
     # compute week type possibly switching if Monday auto switch true
     week = settings.get("current_week", "tepa")
@@ -497,7 +519,8 @@ def callback_handler(cq):
             except Exception:
                 send_message_safe(cid, text, reply_markup=kb)
         else:  # grp_ertaga
-            tomorrow_date = (datetime.date.today() + datetime.timedelta(days=1))
+            today_date = today_tashkent_date()
+            tomorrow_date = (today_date + datetime.timedelta(days=1))
             tomorrow_en = tomorrow_date.strftime("%A")
             week = settings.get("current_week", "tepa")
             if settings.get("auto_switch_on_monday", True) and tomorrow_date.weekday() == 0:
@@ -521,7 +544,6 @@ def callback_handler(cq):
                 header = f"📅 *{week.capitalize()} hafta* — Haftalik jadval:\n\n"
                 body_parts = []
                 for d in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]:
-                    # For weekly view, we append day header and its entries (avoid duplicating full formatted header)
                     j = schedules.get(week, {}).get(d, "—")
                     day_label = EN_TO_UZ_BTN.get(d, d)
                     body = f"🗓 *{day_label}*\n{j}\n"
@@ -750,7 +772,7 @@ def admin_broadcast_send(m):
 def admin_backup(m):
     if not user_is_allowed_as_admin(m.chat.id, m.from_user.id):
         return
-    ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    ts = now_tashkent().strftime("%Y%m%d_%H%M%S")
     backup_file = BACKUP_DIR / f"schedules_backup_{ts}.json"
     save_json(backup_file, schedules)
     try:
@@ -796,15 +818,15 @@ def back_to_main(m):
 @bot.message_handler(content_types=["left_chat_member"])
 def on_left(m):
     # if bot removed, remove group from groups list
-    for u in [m.left_chat_member]:
-        try:
-            if u.id == bot.get_me().id:
-                gid = m.chat.id
-                if gid in groups:
-                    groups.remove(gid)
-                    save_json(GROUPS_FILE, groups)
-        except Exception:
-            pass
+    try:
+        u = m.left_chat_member
+        if u and u.id == bot.get_me().id:
+            gid = m.chat.id
+            if gid in groups:
+                groups.remove(gid)
+                save_json(GROUPS_FILE, groups)
+    except Exception:
+        pass
 
 # ========================
 # Start background loops and polling
