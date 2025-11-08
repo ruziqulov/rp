@@ -1,18 +1,18 @@
 {
     "tepa": {
-        "Monday": "⏰ 13:00 — Matematika\n⏰ 14:30 — O‘zbekiston tarixi\n⏰ 16:10 — Ingliz tili\n\n\nDarslarga tayorlanib keling!!!",
-        "Tuesday": "⏰ 13:00 — Biznes asoslari\n⏰ 14:30 — Biznes asoslari\n⏰ 16:10 — Biznes asoslari\n\n\nDarslarga tayorlanib keling!!!",
-        "Wednesday": "⏰ 13:00 — Yol harakati qoidalari va harakat havfsizligi\n⏰ 14:30 — Ona tili va adabiyot\n⏰ 16:10 — CHQBT\n\n\nDarslarga tayorlanib keling!!!",
-        "Thursday": "⏰ 13:00 — Mehnat muhofazasi va teknika havfsizligi\n⏰ 14:30 — Informatika\n⏰ 16:10 — Yol harakati qoidalari va harakat havfsizligi\n\n\nDarslarga tayorlanib keling!!!",
-        "Friday": "⏰ 13:00 — Rus tili\n⏰ 14:30 — Davlat va huquq asoslari\n⏰ 16:10 — Yol harakati qoidalari va harakat havfsizligi\n\n\nDarslarga tayorlanib keling!!!",
-        "Saturday": "⏰ 13:00 — Ona tili\n⏰ 14:30 — Yol harakati qoidalari va harakat havfsizligi\n⏰ 16:10 — Fizika va astronomiya\n\n\nDarslarga tayorlanib keling!!!"
+        "Monday": "⏰ 13:00 — Manaviyat soat\n⏰ 14:00 — Matematika\n⏰ 15:25 — Tarix\n⏰ 17:00 — Chet tili\n⏰ 18:25 — Ona tili\n\nDars 13:00 da boshlanadi",
+        "Tuesday": "⏰ 14:00 — Biznes asoslari\n⏰ 15:25 — Biznes asoslari\n⏰ 17:00 — Biznes asoslari",
+        "Wednesday": "⏰ 14:00 — Yo‘l harakati qoidalari va harakat xavfsizligi\n⏰ 15:25 — Matematika\n⏰ 17:00 — CHQBT",
+        "Thursday": "⏰ 14:00 — Yo‘l harakati qoidalari va harakat xavfsizligi\n⏰ 15:25 — Informatika\n⏰ 17:00 — Yo‘l harakati qoidalari va harakat xavfsizligi",
+        "Friday": "⏰ 14:00 — Rus tili\n⏰ 15:25 — Davlat va huquq asoslari\n⏰ 17:00 — Yo‘l harakati qoidalari va harakat xavfsizligi",
+        "Saturday": "⏰ 14:00 — Ona tili\n⏰ 15:25 — Yo‘l harakati qoidalari va harakat xavfsizligi\n⏰ 17:00 — Fizika va astronomiya"
     },
     "pastgi": {
-        "Monday": "08:00 - Kimyo\n09:00 - Ingliz tili\n10:30 - Matematika",
-        "Tuesday": "08:00 - Biologiya\n09:00 - Algebra\n10:30 - Tarix",
-        "Wednesday": "08:00 - Fizika\n09:00 - Matematika\n10:30 - Adabiyot",
-        "Thursday": "08:00 - Tarix\n09:00 - Kimyo\n10:30 - Informatika",
-        "Friday": "08:00 - Adabiyot\n09:00 - Informatika\n10:30 - Musiqa",
-        "Saturday": "09:00 - Sport\n10:00 - Sinf soati"
+        "Monday": "⏰ 13:00 — Manaviyat soat\n⏰ 14:00 — Matematika\n⏰ 15:25 — Tarix\n⏰ 17:00 — Chet tili\n⏰ 18:25 — Ona tili\n\nDars 13:00 da boshlanadi",
+        "Tuesday": "⏰ 14:00 — Jismoniy tarbiya\n⏰ 15:25 — Chet tili\n⏰ 17:00 — Elektro texnika va elektronika asoslari",
+        "Wednesday": "⏰ 14:00 — Yo‘l harakati qoidalari\n⏰ 15:25 — Matematika\n⏰ 17:00 — ChQBT",
+        "Thursday": "⏰ 14:00 — Avtomobil elektr va elektron jihozlari tuzilishi (O‘A)\n⏰ 15:25 — Avtomobil elektr va elektron jihozlari tuzilishi (O‘A)\n⏰ 17:00 — Avtomobil elektr va elektron jihozlari tuzilishi (O‘A)",
+        "Friday": "⏰ 14:00 — Rus tili\n⏰ 15:25 — Davlat va huquq asoslari\n⏰ 17:00 — Yo‘l harakati qoidalari",
+        "Saturday": "⏰ 14:00 — Ona tili\n⏰ 15:25 — Yo‘l harakati qoidalari\n⏰ 17:00 — Fizika"
     }
 }
