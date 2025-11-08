@@ -150,7 +150,7 @@ def is_user_admin_in_chat(chat_id, user_id):
 def pretty_schedule_text(day_en, week_type):
     """Make markdown formatted schedule text"""
     if day_en == "Sunday":
-        return "🌞 *Yakshanba* — Bugun dars yo'q! 😎\nDam oling!"
+        return "🌞 *Yakshanba* — Bugun dars yo'q!!!"
     jadval = schedules.get(week_type, {}).get(day_en)
     if not jadval:
         return f"❌ *{EN_TO_UZ_BTN.get(day_en, day_en)}* uchun jadval topilmadi."
